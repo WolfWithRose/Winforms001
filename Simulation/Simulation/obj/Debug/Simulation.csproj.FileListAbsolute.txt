@@ -1,0 +1,10 @@
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\bin\Debug\Simulation.exe.config
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\bin\Debug\Simulation.exe
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\bin\Debug\Simulation.pdb
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.csprojAssemblyReference.cache
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.Form1.resources
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.Properties.Resources.resources
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.csproj.GenerateResource.cache
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.csproj.CoreCompileInputs.cache
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.exe
+D:\Kussa Richárd\KR\Winforms\Winforms001\Simulation\Simulation\obj\Debug\Simulation.pdb

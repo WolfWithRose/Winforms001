@@ -21,5 +21,10 @@ namespace Simulation
         {
 
         }
+
+        private void Imput_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
