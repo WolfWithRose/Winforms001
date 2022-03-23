@@ -15,6 +15,7 @@ namespace Simulation
         public bool nem;
         public Vektor hely;
         public Vektor seb;
+        public int err;
         //public int term;
         //public int ev;
         //public int eleje;
@@ -22,7 +23,7 @@ namespace Simulation
 
         public Brush toll;
 
-        public Agens(string nev, bool nem, Vektor hely)
+        public Agens(string nev, bool nem, Vektor hely, int err)
         {
             var er = new Random();
             Point p = new Point(er.Next(-10, 10), er.Next(-10, 10));
@@ -30,6 +31,7 @@ namespace Simulation
             this.nem = nem;
             this.hely = hely;
             this.seb = new Vektor(p);
+            this.err = err;
 
             if (nem)
             {
@@ -49,14 +51,13 @@ namespace Simulation
             Graphics rajzolókészlet = Graphics.FromImage(kep);
 
             foreach (Agens agens in Agens.lista)
-                agens.Rajzoldle(rajzolókészlet);
+                agens.Rajzoldle(rajzolókészlet, agens.err);
 
             Kepernyo.Image = kep;
             Kepernyo.Refresh();
         }
-        void Rajzoldle(Graphics rajzolókészlet)
+        void Rajzoldle(Graphics rajzolókészlet, int R)
         {
-            int R = 15;
             int xp = (int)Math.Round(hely.X - R);
             int yp = (int)Math.Round(hely.Y - R);          
             rajzolókészlet.FillEllipse(this.toll, new Rectangle(xp, yp, 2 * R, 2 * R));
@@ -71,12 +72,12 @@ namespace Simulation
         {
             foreach (Agens agens in Agens.lista)
             {
-                if (agens.hely.X > Kepernyo.Width || agens.hely.X < 0)
+                if (agens.hely.X > Kepernyo.Width - agens.err || agens.hely.X < 0 + agens.err)
                 {
                     Vektor fordulas = new Vektor(-agens.seb.X, agens.seb.Y);
                     agens.seb = fordulas;
                 }                
-                if (agens.hely.Y > Kepernyo.Height || agens.hely.Y < 0)
+                if (agens.hely.Y > Kepernyo.Height - agens.err || agens.hely.Y < 0 + agens.err)
                 {
                     Vektor fordulas = new Vektor(agens.seb.X, -agens.seb.Y);
                     agens.seb = fordulas;

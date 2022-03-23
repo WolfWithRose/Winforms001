@@ -29,7 +29,7 @@ namespace Simulation
             {
                 nem = true;
             }
-            new Agens(Nev.Text, nem, new Vektor(e.Location.X, e.Location.Y));
+            new Agens(Nev.Text, nem, new Vektor(e.Location.X, e.Location.Y), 15);
             Agens.Rajzold_le_mind_ide(Kepernyo);
             //metronom.Stop();
         }
@@ -57,16 +57,6 @@ namespace Simulation
                 start.Text = "STOP";
             }
             fut = !fut;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Nem_SelectedItemChanged(object sender, EventArgs e)
-        {
-            
         }
     }
 }

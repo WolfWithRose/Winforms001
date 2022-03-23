@@ -71,7 +71,6 @@
             this.Nem.Size = new System.Drawing.Size(120, 20);
             this.Nem.TabIndex = 3;
             this.Nem.Text = "Nem";
-            this.Nem.SelectedItemChanged += new System.EventHandler(this.Nem_SelectedItemChanged);
             // 
             // metronom
             // 
@@ -82,14 +81,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1444, 650);
+            this.ClientSize = new System.Drawing.Size(1444, 750);
             this.Controls.Add(this.Nem);
             this.Controls.Add(this.Nev);
             this.Controls.Add(this.start);
             this.Controls.Add(this.Kepernyo);
             this.Name = "Form1";
             this.Text = "Last Names";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Kepernyo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
