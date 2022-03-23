@@ -9,6 +9,7 @@ namespace Simulation
 {
     class Vektor
     {
+        public Random R;
         public double X { get; set; }
         public double Y { get; set; }
 
