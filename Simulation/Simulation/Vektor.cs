@@ -25,5 +25,7 @@ namespace Simulation
         public static Vektor operator /(Vektor b, double lambda) => (1 / lambda) * b;
         public double HosszNégyzet() => X * X + Y * Y;
         public double Hossz() => Math.Sqrt(HosszNégyzet());
+        public static double kétponttávolsága(Vektor a, Vektor b) => Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+        public static Vektor felezőpont(Vektor a, Vektor b) => new Vektor((a.X + b.X)/2, (a.Y + b.Y)/2);
     }
 }

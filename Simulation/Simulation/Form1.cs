@@ -18,25 +18,26 @@ namespace Simulation
             InitializeComponent();
 
             DomainUpDown.DomainUpDownItemCollection collection = Nem.Items;
-            collection.Add("Férfi");
             collection.Add("Nő");
+            collection.Add("Férfi");
             Nem.SelectedIndex = 0;
         }
         private void Kepernyo_MouseDown(object sender, MouseEventArgs e)
         {
-            bool nem = false;
+            int nem = 0;
             if (Nem.Text == "Férfi")
             {
-                nem = true;
+                nem = 1;
             }
             new Agens(Nev.Text, nem, new Vektor(e.Location.X, e.Location.Y), 15);
             Agens.Rajzold_le_mind_ide(Kepernyo);
-            //metronom.Stop();
         }
         private void metronom_Tick(object sender, EventArgs e)
         {
             Agens.Összes_lepattanás(Kepernyo);
             Agens.Összes_léptetése();
+            Agens.Összes_találkozás();
+            Agens.Összes_születés();
             Agens.Rajzold_le_mind_ide(Kepernyo);
         }
 
