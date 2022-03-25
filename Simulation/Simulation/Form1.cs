@@ -29,7 +29,7 @@ namespace Simulation
             {
                 nem = 1;
             }
-            new Agens(Nev.Text, nem, new Vektor(e.Location.X, e.Location.Y), 15);
+            new Agens(Nev.Text, nem, new Vektor(e.Location.X, e.Location.Y), 15, -1);
             Agens.Rajzold_le_mind_ide(Kepernyo);
         }
         private void metronom_Tick(object sender, EventArgs e)
@@ -38,6 +38,7 @@ namespace Simulation
             Agens.Összes_léptetése();
             Agens.Összes_találkozás();
             Agens.Összes_születés();
+            Agens.Összes_halálozás();
             Agens.Rajzold_le_mind_ide(Kepernyo);
         }
 

@@ -11,6 +11,7 @@ namespace Simulation
     class Agens
     {
         static List<Agens> lista = new List<Agens>();
+        static List<Tuple<Agens, Agens, Agens>> párok = new List<Tuple<Agens, Agens, Agens>>();
         public string nev;
         public int nem;
         public Vektor hely;
@@ -18,15 +19,15 @@ namespace Simulation
         public int err;
         public bool kapcsolatban;
         public int term;
-        //public int menny;
         public int ev;
         public int het;
-        //public int eleje;
-        //public int vege;
+        public int eev;
+        public bool ded;
+        public int dex;
 
         public Brush toll;
 
-        public Agens(string nev, int nem, Vektor hely, int err)
+        public Agens(string nev, int nem, Vektor hely, int err, int dex)
         {
             var er = new Random();
             Point p = new Point(er.Next(-10, 10), er.Next(-10, 10));
@@ -36,6 +37,8 @@ namespace Simulation
             this.err = err;
             this.ev = 0;
             this.het = 0;
+            this.ded = false;
+            this.dex = dex;
 
             if (nem == 1)
             {
@@ -43,6 +46,7 @@ namespace Simulation
                 this.seb = new Vektor(p);
                 this.kapcsolatban = false;
                 this.term = -1;
+                this.eev = er.Next(49, 82);
             }
             else if (nem == 0)
             {
@@ -50,13 +54,15 @@ namespace Simulation
                 this.seb = new Vektor(p);
                 this.kapcsolatban = false;
                 this.term = -1;
+                this.eev = er.Next(51, 87);
             }
             else
             {
                 toll = new SolidBrush(Color.Purple);
                 this.seb = new Vektor(0, 0);
                 this.kapcsolatban = true;
-                this.term = er.Next(1, 10);
+                this.term = er.Next(1, 7);
+                this.eev = 88;
             }
 
             Agens.lista.Add(this);
@@ -69,7 +75,7 @@ namespace Simulation
 
             foreach (Agens agens in Agens.lista)
             {
-                if (agens.kapcsolatban == false || agens.nem == 2)
+                if ((agens.kapcsolatban == false || agens.nem == 2)&&!agens.ded)
                 {
                     agens.Rajzoldle(rajzolókészlet, agens.err);
                 }
@@ -100,6 +106,10 @@ namespace Simulation
             {
                 ev += 1;
                 het = 0;
+                if (ev == eev)
+                {
+                    ded = true;
+                }
             }
         }
         public static void Összes_lepattanás(PictureBox Kepernyo)
@@ -146,9 +156,9 @@ namespace Simulation
             {
                 for (int j = i + 1; j < lista.Count(); j++)
                 {
-                    if (Vektor.kétponttávolsága(lista[i].hely, lista[j].hely) <= lista[0].err*2)
+                    if (Vektor.kétponttávolsága(lista[i].hely, lista[j].hely) <= lista[0].err*2 && !lista[i].ded && !lista[j].ded)
                     {
-                        if (lista[i].nem == lista[j].nem && lista[i].kapcsolatban == false && lista[j].kapcsolatban == false)
+                        if ((lista[i].nem == lista[j].nem && lista[i].kapcsolatban == false && lista[j].kapcsolatban == false))
                         {
                             if (Vektor.kétponttávolsága(lista[i].hely + lista[i].seb, lista[j].hely + lista[j].seb) < Vektor.kétponttávolsága(lista[i].hely, lista[j].hely))
                             {
@@ -172,8 +182,10 @@ namespace Simulation
                             else
                             {
                                 nev = lista[j].nev;
-                            }
-                            new Agens(nev, 2, Vektor.felezőpont(lista[i].hely, lista[j].hely), 20);
+                            }                            
+                            new Agens(nev, 2, Vektor.felezőpont(lista[i].hely, lista[j].hely), 20, párok.Count()-1);
+                            Tuple<Agens, Agens, Agens> t = new Tuple<Agens, Agens, Agens>(lista[i], lista[j], lista[lista.Count() - 1]);
+                            párok.Add(t);
                         }
                     }
                 }
@@ -184,14 +196,47 @@ namespace Simulation
             int z = lista.Count();
             for (int i = 0; i < z; i++)
             {
-                if (lista[i].nem == 2)
+                if (lista[i].nem == 2 && !lista[i].ded)
                 {
                     if (lista[i].term == lista[i].ev)
                     {
                         var er = new Random();
-                        new Agens(lista[i].nev, er.Next(0, 2), lista[i].hely, 15);
+                        new Agens(lista[i].nev, er.Next(0, 2), lista[i].hely, 15, -1);
                         lista[i].term = er.Next(1, 10);
                     }
+                }
+            }
+        }
+        public static void Összes_halálozás()
+        {
+            int z = párok.Count() - 1;
+            for (int i = 0; i < z; i++)
+            {
+                if (párok[i].Item1.ded == true)
+                {
+                    párok[i].Item2.kapcsolatban = false;
+                    var er = new Random();
+                    Point p = new Point(er.Next(-10, 10), er.Next(-10, 10));
+                    párok[i].Item2.seb = new Vektor(p);
+
+                    párok[i].Item3.ded = true;
+
+                    párok.RemoveAt(i);
+                    i--;
+                    z--;
+                }
+                else if (párok[i].Item2.ded == true)
+                {
+                    párok[i].Item1.kapcsolatban = false;
+                    var er = new Random();
+                    Point p = new Point(er.Next(-10, 10), er.Next(-10, 10));
+                    párok[i].Item1.seb = new Vektor(p);
+
+                    párok[i].Item3.ded = true;
+
+                    párok.RemoveAt(i);
+                    i--;
+                    z--;
                 }
             }
         }

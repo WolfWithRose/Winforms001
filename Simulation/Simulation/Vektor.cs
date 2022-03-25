@@ -15,6 +15,7 @@ namespace Simulation
 
         public Vektor(double x, double y) => (X, Y) = (x, y);
         public Vektor(Point P) => (X, Y) = ((double)P.X, (double)P.Y);
+        public Vektor(Vektor a, Vektor b) => (X, Y) = (Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y));
 
         public static Vektor operator +(Vektor a, Vektor b) => new Vektor(a.X + b.X, a.Y + b.Y);
         public static Vektor operator -(Vektor a, Vektor b) => new Vektor(a.X - b.X, a.Y - b.Y);
