@@ -23,11 +23,10 @@ namespace Simulation
         public int het;
         public int eev;
         public bool ded;
-        public int dex;
 
         public Brush toll;
 
-        public Agens(string nev, int nem, Vektor hely, int err, int dex)
+        public Agens(string nev, int nem, Vektor hely, int err, Panel panel)
         {
             var er = new Random();
             Point p = new Point(er.Next(-10, 10), er.Next(-10, 10));
@@ -38,7 +37,6 @@ namespace Simulation
             this.ev = 0;
             this.het = 0;
             this.ded = false;
-            this.dex = dex;
 
             if (nem == 1)
             {
@@ -66,6 +64,14 @@ namespace Simulation
             }
 
             Agens.lista.Add(this);
+            if (lista.Count(x => x.nev == nev && x.nem != 2) == 1)
+            {
+                new Counter(nev, panel);
+            }
+            else if(nem != 2)
+            {
+                Counter.Addolj(nev);
+            }
         }
 
         public static void Rajzold_le_mind_ide(PictureBox Kepernyo)
@@ -90,27 +96,37 @@ namespace Simulation
             int yp = (int)Math.Round(hely.Y - R);          
             rajzolókészlet.FillEllipse(this.toll, new Rectangle(xp, yp, 2 * R, 2 * R));
         }
-        public static void Összes_léptetése()
+        public static void Összes_léptetése(Label a)
         {
             foreach (Agens agens in Agens.lista)
             {
                 agens.Léptet();
-                agens.Öregedés();
+                agens.Öregedés(a);
             }
         }
         private void Léptet() => hely += seb;
-        private void Öregedés()
+        private void Öregedés(Label a)
         {
-            het ++;
-            if (het == 52)
+            if (!ded)
             {
-                ev += 1;
-                het = 0;
-                if (ev == eev)
+                het++;
+                if (het == 52)
                 {
-                    ded = true;
+                    ev += 1;
+                    het = 0;
+                    if (ev == eev)
+                    {
+                        ded = true;
+                        if (nem != 2)
+                        {
+                            int b = int.Parse(a.Text);
+                            b++;
+                            a.Text = (b).ToString();
+                            Counter.Vegyél_el(nev);
+                        }
+                    }
                 }
-            }
+            }            
         }
         public static void Összes_lepattanás(PictureBox Kepernyo)
         {
@@ -150,7 +166,7 @@ namespace Simulation
                 }
             }
         }
-        public static void Összes_találkozás()
+        public static void Összes_találkozás(Panel panel)
         {
             for (int i = 0; i < lista.Count() - 1; i++)
             {
@@ -158,7 +174,7 @@ namespace Simulation
                 {
                     if (Vektor.kétponttávolsága(lista[i].hely, lista[j].hely) <= lista[0].err*2 && !lista[i].ded && !lista[j].ded)
                     {
-                        if ((lista[i].nem == lista[j].nem && lista[i].kapcsolatban == false && lista[j].kapcsolatban == false))
+                        if ((lista[i].nem == lista[j].nem) && lista[i].kapcsolatban == false && lista[j].kapcsolatban == false)
                         {
                             if (Vektor.kétponttávolsága(lista[i].hely + lista[i].seb, lista[j].hely + lista[j].seb) < Vektor.kétponttávolsága(lista[i].hely, lista[j].hely))
                             {
@@ -168,7 +184,7 @@ namespace Simulation
                                 lista[j].seb = a;
                             }                            
                         }
-                        else if (lista[i].kapcsolatban == false && lista[j].kapcsolatban == false && lista[i].nev != lista[j].nev)
+                        else if (lista[i].kapcsolatban == false && lista[j].kapcsolatban == false && lista[i].nev != lista[j].nev && lista[i].ev >= 18 && lista[j].ev >= 18)
                         {
                             lista[i].kapcsolatban = true;
                             lista[j].kapcsolatban = true;
@@ -183,7 +199,7 @@ namespace Simulation
                             {
                                 nev = lista[j].nev;
                             }                            
-                            new Agens(nev, 2, Vektor.felezőpont(lista[i].hely, lista[j].hely), 20, párok.Count()-1);
+                            new Agens(nev, 2, Vektor.felezőpont(lista[i].hely, lista[j].hely), 20, panel);
                             Tuple<Agens, Agens, Agens> t = new Tuple<Agens, Agens, Agens>(lista[i], lista[j], lista[lista.Count() - 1]);
                             párok.Add(t);
                         }
@@ -191,7 +207,7 @@ namespace Simulation
                 }
             }
         }
-        public static void Összes_születés()
+        public static void Összes_születés(Label a, Panel panel)
         {
             int z = lista.Count();
             for (int i = 0; i < z; i++)
@@ -200,16 +216,19 @@ namespace Simulation
                 {
                     if (lista[i].term == lista[i].ev)
                     {
+                        int b = int.Parse(a.Text);
                         var er = new Random();
-                        new Agens(lista[i].nev, er.Next(0, 2), lista[i].hely, 15, -1);
-                        lista[i].term = er.Next(1, 10);
+                        new Agens(lista[i].nev, er.Next(0, 2), lista[i].hely, 15, panel);
+                        lista[i].term = er.Next(1, 7);
+                        b++;
+                        a.Text = (b).ToString();
                     }
                 }
             }
         }
         public static void Összes_halálozás()
         {
-            int z = párok.Count() - 1;
+            int z = párok.Count();
             for (int i = 0; i < z; i++)
             {
                 if (párok[i].Item1.ded == true)
@@ -238,6 +257,25 @@ namespace Simulation
                     i--;
                     z--;
                 }
+            }
+        }
+
+        public static void Törlés()
+        {
+            lista.Clear();
+            párok.Clear();
+        }
+        public static void Söprögetés()
+        {
+            int index = lista.Count() - 1;
+            while (index > -1)
+            {
+                if (lista[index].ded == true)
+                {
+                    lista.RemoveAt(index);
+                    index--;
+                }
+                index--;
             }
         }
     }

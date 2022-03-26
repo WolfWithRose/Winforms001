@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agens.cs" />
+    <Compile Include="Counter.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
