@@ -64,14 +64,17 @@ namespace Simulation
             }
 
             Agens.lista.Add(this);
-            if (lista.Count(x => x.nev == nev && x.nem != 2) == 1)
+            if (nem != 2)
             {
-                new Counter(nev, panel);
-            }
-            else if(nem != 2)
-            {
-                Counter.Addolj(nev);
-            }
+                if (lista.Count(x => x.nev == nev && x.nem != 2) == 1)
+                {
+                    new Counter(nev, panel);
+                }
+                else
+                {
+                    Counter.Addolj(nev);
+                }
+            }            
         }
 
         public static void Rajzold_le_mind_ide(PictureBox Kepernyo)
